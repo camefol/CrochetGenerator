@@ -1,9 +1,8 @@
 import { View, Text, StyleSheet } from "react-native";
-
-export default function () {
+export default function TabGenerator () {
     return (
         <View>
-            <Text>Hello</Text>
+            <Text>Tab 1</Text>
         </View>
     )
 }
