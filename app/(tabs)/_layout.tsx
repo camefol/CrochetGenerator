@@ -1,12 +1,13 @@
 import { Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { BetterText } from "@/components/BetterText";
 export default function TabLayout (){
     return (
         <Tabs screenOptions={{ tabBarActiveTintColor:"green"}}>
             <Tabs.Screen
             name="index"
             options={{
-                title:"Home",
+                headerTitle: () => <BetterText type="title">Home</BetterText>,
                 tabBarIcon: ({ color, focused }) => (
                     <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
                   ),
