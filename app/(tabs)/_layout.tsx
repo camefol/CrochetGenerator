@@ -1,13 +1,25 @@
 import { Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { BetterText } from "@/components/BetterText";
+import { BetterText } from "@/components/topology/BetterText";
 export default function TabLayout (){
+    
     return (
-        <Tabs screenOptions={{ tabBarActiveTintColor:"green"}}>
+        <Tabs screenOptions={{ 
+            tabBarActiveTintColor:"white",
+            tabBarInactiveTintColor:"gray",
+            tabBarHideOnKeyboard:true,
+            headerTransparent:false,
+            headerStyle:{
+                backgroundColor: "rgba(0, 0, 0, 0.3)"
+            },
+            tabBarStyle:{
+                backgroundColor:"darkblue",
+            }
+            }}>
             <Tabs.Screen
             name="index"
             options={{
-                headerTitle: () => <BetterText type="title">Home</BetterText>,
+                title:"Home",
                 tabBarIcon: ({ color, focused }) => (
                     <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
                   ),
@@ -16,7 +28,7 @@ export default function TabLayout (){
             <Tabs.Screen
             name="generator"
             options={{
-                title:"Generator",
+                title:'Generator',
                 tabBarIcon: ({ color, focused }) => (
                     <TabBarIcon name={focused ? 'bulb' : 'bulb-outline'} color={color} />
                   ),
@@ -25,7 +37,7 @@ export default function TabLayout (){
             <Tabs.Screen
             name="settings"
             options={{
-                title:"Settings",
+                title:'Settings',
                 tabBarIcon: ({ color, focused }) => (
                     <TabBarIcon name={focused ? 'settings' : 'settings-outline'} color={color} />
                   ),
