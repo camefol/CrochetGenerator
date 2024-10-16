@@ -1,42 +1,35 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput, Button } from "react-native-paper";
 import { BetterText } from "@/components/topology/BetterText";
-import CrochetDiagram, {Diagram} from "@/components/custom/Crochet-diagram";
+import { AuthenticationContext } from "@/components/authentication/context";
+import { useContext, useState, useEffect } from "react";
 
 export default function TabGenerator () {
+    const { user } = useContext(AuthenticationContext)
+    const [diagram, setDiagram] = useState({})
 
-    const GetDiagram = () => {
-        console.log(CrochetDiagram)
+    const createPrototypeDiagram = () => {
+        setDiagram(() => {
+            const newDiagram = {
+                name:'Hi'
+            }
+            return newDiagram;
+        })
+        console.log(diagram)
     }
+
+    const GetDiagram = async () => {
+        try{
+          return createPrototypeDiagram()
+        } catch (e){
+            console.log(e)
+        }
+    }
+
+
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.containerDescription}>
-                <View style={{flex:0.8}}>
-                <TextInput 
-                mode="outlined"
-                maxLength={100}
-                style={{
-                    flex:1,
-                    margin: 10,
-                }}
-                >
-                    Hello</TextInput>
-                <TextInput 
-                style={{
-                    flex:1
-                }}
-                >
-                    Hi</TextInput>
-                <TextInput style={{flex:1}}></TextInput>
-                <TextInput style={{flex:1}}></TextInput>
-                <TextInput style={{flex:1}}></TextInput>
-                <TextInput style={{flex:1}}></TextInput>
-                <TextInput style={{flex:1}}></TextInput>
-                <TextInput style={{flex:1}}></TextInput>
-                <TextInput style={{flex:1}}></TextInput>
-                </View>
-            </View>
+        <View style={styles.container}>
             <Button
             mode="elevated"
             style={styles.button}
@@ -45,7 +38,7 @@ export default function TabGenerator () {
             
                <BetterText type="title">Generate</BetterText>
             </Button>
-        </SafeAreaView>
+        </View>
     )
 }
 
