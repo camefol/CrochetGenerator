@@ -16,6 +16,7 @@ firebase.config.js
 .DS_Store
 
 
+constants/
 DiagramsData.json
 
 
