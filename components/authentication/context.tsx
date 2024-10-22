@@ -3,6 +3,8 @@ import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndP
 import { FIREBASE_APP, FIREBASE_AUTH, FIRESTORE_DB } from '@/firebase.config';
 import { collection, getDocs, addDoc, setDoc, doc, getDoc } from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
+import { useRouter } from "expo-router";
+import { Alert } from "react-native";
 
 
 export const AuthenticationContext = createContext(undefined);
@@ -12,6 +14,8 @@ export const AuthenticationProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [errorLogin, setErrorLogin] = useState('');
     const [errorRegister, setErrorRegister] = useState('');
+    const [ stripeRoleStatus, setStripeRoleStatus] = useState<string | undefined>(undefined);
+    const router = useRouter();
 
     useEffect(() => {
       setErrorLogin('');
@@ -62,8 +66,9 @@ export const AuthenticationProvider = ({ children }) => {
         console.log(email + ' is being added to firestore')
         const userRef = doc(collection(FIRESTORE_DB, 'users'), user.uid);
         setDoc(userRef, { email: user.email, subscription: false });
+        Alert.alert('You have been succesfully registered')
+        router.replace('/(authentication)/login')
         // Only set the user if the registration is successful
-        setUser(user);
       })
       .catch((error) => {
         let errorMessage = error.message;
@@ -88,9 +93,12 @@ export const AuthenticationProvider = ({ children }) => {
         } else if (error.code === 'auth/missing-password') {
           errorMessage = 'The password is missing. Please provide a password.';
         }
-  
         setErrorRegister(errorMessage);
-        setUser(null);
+        if(errorMessage==='') {
+        Alert.alert(errorRegister)
+      } else {
+        Alert.alert('Registration failed')
+      }
       });
     };
 
@@ -108,8 +116,42 @@ export const AuthenticationProvider = ({ children }) => {
     }
   };
 
+  const getStripeRole = () => {
+    return FIREBASE_AUTH.currentUser
+      ?.getIdToken(true)
+      .then(() => {
+        return FIREBASE_AUTH.currentUser?.getIdTokenResult();
+      })
+      .then((decodedToken) => {
+        try {
+          if (user) {
+          const stripeStatus = decodedToken?.claims.stripeRole;
+          console.log("Token is this StripeRole: ", stripeStatus);
+          if (stripeStatus === "premium") {
+            // Do something for premium user
+            console.log('stripeStatus is premium')
+            setStripeRoleStatus(stripeStatus);
+          } else if (!stripeStatus) {
+            // Do something for non-premium user
+            console.log('Stripe status is basic')
+            setStripeRoleStatus('basic');
+          }
+          return stripeStatus || 'basic'; // Ensure 'basic' is returned if stripeStatus is undefined
+        }
+        } catch (error) {
+          console.log("Error getting Stripe role:", error);
+        }
+      
+      })
+      .catch((error) => {
+        console.error("Error fetching or decoding token:", error);
+        setStripeRoleStatus('basic');
+        return 'basic';
+      });
+  };
+
   return (
-    <AuthenticationContext.Provider value={{isAuthenticated:!!user, user, login, register, logout, loading, errorLogin, errorRegister }}>
+    <AuthenticationContext.Provider value={{isAuthenticated:!!user, user, login, register, logout, loading, errorLogin, errorRegister, getStripeRole }}>
       {children}
     </AuthenticationContext.Provider>
   );

@@ -6,6 +6,7 @@ import { TextInput, Button  } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Background } from '@/components/custom/background';
 import DismissingKeyboardWrapper from '@/components/custom/DismissingKeyboardWrapper';
+import { dimensionStyles } from '@/components/custom/dimensionsView';
 
 export default function LoginScreen() {
   const { login, loading, errorLogin} = useContext(AuthenticationContext);
@@ -29,7 +30,7 @@ export default function LoginScreen() {
   return (
     <Background>
     <DismissingKeyboardWrapper>
-    <View style={styles.container}>
+    <View style={dimensionStyles.mainContainer}>
       <TextInput style={{margin:2}}  value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" autoCapitalize="none" mode='outlined' left={<TextInput.Icon icon="email"/>}/>
       <TextInput style={{margin:2}} value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry mode='outlined' />
       <View style={styles.loginButton}>
@@ -47,9 +48,10 @@ export default function LoginScreen() {
   </Button>
   ) }
       </View>
+      {errorLogin && <Text>{errorLogin}</Text>}
       <Text style={styles.registerContainer}>Don't have an account?</Text>
       <Button mode='contained' onPress={handleRegisterRedirect} >Register</Button>
-      {errorLogin && <Text>{errorLogin}</Text>}
+      
     </View>
     </DismissingKeyboardWrapper>
     </Background>
@@ -59,19 +61,13 @@ export default function LoginScreen() {
 const { width, height } = Dimensions.get('window');  // Get screen width and height
 
 const styles = StyleSheet.create({
-  container: {
-    flex:1,
-    justifyContent: 'center',
-    marginLeft:width * 0.10,
-    marginRight:width * 0.10,
-  },
-
   loginButton: {
     margin: 20
   }, 
   registerContainer: {
     textAlign:"center",
     color:'black',
+    marginTop:10
   }
 
 })

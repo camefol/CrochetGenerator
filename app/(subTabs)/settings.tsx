@@ -13,7 +13,7 @@ export default function TabSettings () {
         <View style={dimensionStyles.mainContainer}>
             <View style={styles.userContainer}>
                 {user ? (
-                    <Text>unsubscribed User: {user.email}</Text>
+                    <Text>Subscribed User: {user.email}</Text>
                 ) : (
                     <Text>No user logged in</Text>
                 )}

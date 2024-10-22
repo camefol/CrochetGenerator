@@ -4,6 +4,7 @@ import { TextInput, Button } from "react-native-paper";
 import { BetterText } from "@/components/topology/BetterText";
 import { AuthenticationContext } from "@/components/authentication/context";
 import { useContext, useState, useEffect } from "react";
+import { dimensionStyles } from "@/components/custom/dimensionsView";
 
 export default function TabGenerator () {
     const { user } = useContext(AuthenticationContext)
@@ -29,7 +30,7 @@ export default function TabGenerator () {
 
 
     return (
-        <View style={styles.container}>
+        <View style={dimensionStyles.mainContainer}>
             <Button
             mode="elevated"
             style={styles.button}

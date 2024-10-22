@@ -12,8 +12,15 @@ import { FIREBASE_AUTH } from "@/firebase.config";
 export default function () {
     const { diagrams, handleTest, addDiagram  } = useContext(DiagramContext)
     const { getStripeRole } = useContext(AuthenticationContext)
+    const [stripeRoleStatus, setStripeRoleStatus] = useState('basic');
 
-  
+
+    const TutorialTextSubscribed = ( 
+        <Text>
+          Our App is for a big part made for beginners and intermediate Crocheters, 
+          Experts may find our App helpful. 
+        </Text>
+    )
       const tutorialTextBasic = (
         <Text>
           Hello unsubscribed user!
@@ -24,13 +31,16 @@ export default function () {
     return (
         <View style={dimensionStyles.mainContainer}>
             <View style={styles.containerIntro}>
-                <BetterText type="defaultSemiBold" style={styles.introductionText}>Create your own Crochet Patterns from scratch.</BetterText>
-                <BetterText type="defaultSemiBold" style={{textAlign:'center', marginTop:15}}>You can just use our generator.</BetterText>
+                <BetterText type="defaultSemiBold">Create your own Crochet Patterns from scratch.</BetterText>
+                <BetterText type="defaultSemiBold" style={{textAlign:'center'}}>You can just use our generator.</BetterText>
             </View>
             <View style={styles.containerDiagrams}>
-            <Text style={{textAlign:'center'}}>
-              Tutorial
-            </Text>
+            {stripeRoleStatus==='basic' ? (
+              tutorialTextBasic
+            ) : (
+              TutorialTextSubscribed
+            )}
+            <Button mode="outlined" > Test </Button>
             </View>
         </View>
     )
@@ -39,6 +49,7 @@ export default function () {
 
 const styles = StyleSheet.create({
     container:{
+
         margin: 10,
         alignItems:'center'
     },
@@ -47,11 +58,7 @@ const styles = StyleSheet.create({
     },
     containerDiagrams:{
         flex:1,
-        justifyContent:'center',
+        justifyContent:'flex-end',
         marginBottom:10,
-    },
-    introductionText : {
-      fontSize: 18,
-      textAlign:'center'
     }
 })
