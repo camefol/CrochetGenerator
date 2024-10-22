@@ -15,8 +15,8 @@ firebase.config.js
 # macOS
 .DS_Store
 
+coreFunctions
 
-constants/DiagramsData.json
 
 
 
